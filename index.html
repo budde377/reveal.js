@@ -7,7 +7,7 @@
 		<title>reveal.js</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+		<link rel="stylesheet" href="css/theme/blood.css">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -20,12 +20,324 @@
 			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
 			document.getElementsByTagName( 'head' )[0].appendChild( link );
 		</script>
+		<style>
+			.reveal section h1 {
+				font-size: 2em;
+			}
+			.reveal section h2 {
+				font-size: 1.5em;
+			}
+			.reveal section h3 {
+				font-size: 1em;
+			}
+			.reveal section img.icon {
+				border: 0;
+				margin: 0;
+				height: 1em;
+				background: transparent;
+				display: inline-block;
+			}
+			.reveal section cite {
+				font-style: italic;
+				padding: 0 2em;
+				display: block;
+				font-size: 0.8em;
+			}
+			.reveal section cite .source {
+				display: block;
+				text-align: right;
+				padding-top: 2em;
+				font-size: 0.5em;
+			}
+			.reveal section a.reference {
+				font-size: 0.5em;
+				line-height: 2em;
+			}
+		</style>
 	</head>
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section>
+						<h1>Building personal and intelligent assistants</h1>
+						BartJS Meetup - 31. August 2017
+				</section>
+				<section>
+						<h2>About me</h2>
+						<p class="fragment">
+							Christian Budde Christensen
+						</p>
+						<p class="fragment">
+							M.Sc. from Aarhus University, Denmark
+						</p>
+						<p class="fragment">
+							<img class="icon" data-src="img/GitHub-Mark-Light-120px-plus.png"> / budde377
+						</p>
+						<p class="fragment">
+							Software developer at Mito Ai
+						</p>
+				</section>
+				<section>
+					<h2>Mito.ai</h2>
+					<p class="fragment">
+						7 employees
+					</p>
+					<p class="fragment">
+						FinTech F3 inkubator
+					</p>
+					<p class="fragment">
+						Assistant for private investors
+					</p>
+					<p class="fragment">
+						Scala, JavaScript, Flow, Docker, Kubernetes, <br /> Google Cloud
+					</p>
+					<aside class="notes">
+						400 000 articles / 24h
+						GitHub
+						Continious Deployment
+						Demo bot
+					</aside>
+				</section>
+				<!-- INTRODUCTION -->
+				<section>
+						<h2>Why chatbots?</h2>
+						<ul>
+							<li class="fragment">Massive user-base</li>
+							<li class="fragment">Cross-platform distribution channel</li>
+							<li class="fragment">Push notifications</li>
+							<li class="fragment">VERY simple interface</li>
+							<li class="fragment">Cheap NLU</li>
+						</ul>
+				</section>
+				<section>
+						<h2>Anatomy of a chatbot</h2>
+						<ol>
+							<li class="fragment">Integrate w. a messaging platform</li>
+							<li class="fragment">Parse and understand incomming messages</li>
+							<li class="fragment">Build reply to incomming messages</li>
+						</ol>
+				</section>
+				<section>
+					<h2>Messaging platforms</h2>
+					<ul>
+						<li>Slack</li>
+						<li>WhatsApp</li>
+						<li>Skype</li>
+						<li>Facebook Messenger</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Example: Facebook Messenger</h3>
+					<ol>
+						<li class="fragment">
+							Receive messages with Webhooks
+							<a class="reference" href="https://developers.facebook.com/docs/messenger-platform/webhook">
+								https://developers.facebook.com/docs/messenger-platform/webhook
+							</a>
+						</li>
+						<li class="fragment">
+							Send replies via Facebook Graph API
+							<a class="reference" href="https://developers.facebook.com/docs/messenger-platform/reference/send-api">
+								https://developers.facebook.com/docs/messenger-platform/reference/send-api
+							</a>
+						</li>
+						<div class="fragment">
+						<li>...</li>
+						<li>
+							Profit
+						</li>
+					</div>
+					</ol>
+				</section>
+				<section>
+						<h2>Anatomy of a chatbot</h2>
+						<ol>
+							<li>Integrate w. a messaging platform ✅</li>
+							<li>Parse and understand incomming messages</li>
+							<li>Build reply to incomming messages</li>
+						</ol>
+				</section>
+				<section>
+					<cite>
+						<b>N</b>atural <b>L</b>aunguage <b>U</b>nderstanding is a subtopic
+						of natural language processing in artificial intelligence that deals
+						with machine reading comprehension
+						<a class="source">
+							https://en.wikipedia.org/wiki/Natural_language_understanding
+						</a>
+					</cite>
+					<aside class="notes">
+						The brains of a chatbot. What makes it different from
+						just defining commands.
+					</aside>
+				</section>
+				<section>
+					<h2>Chatbot frameworks</h2>
+					<p>Major players are providing <i>free</i> NLU services</p>
+					<ul>
+						<li> API.ai (Google)</li>
+						<li> Watson (IBM)</li>
+						<li> Bot framework (Microsoft)</li>
+						<li> Wit.ai (Facebook)</li>
+				</section>
+				<section>
+					<h3>Example: Wit.ai</h3>
+					<pre><code data-trim data-noescape>
+						curl -XGET 'https://api.wit.ai/message?q=<mark>Send%20me%20a%20Gif</mark>' \
+						  -H 'Authorization: Bearer <mark>TOKEN</mark>
+					</code></pre>
+					<pre><code data-trim data-noescape>
+						{
+						  "msg_id": "0EPRPKKplHuhYqMC6",
+						  "_text": "Send me a Gif",
+						  "entities": {
+						    "subject": [
+						      {
+						        "suggested": true,
+						        "confidence": 0.77118552501085,
+						        "value": "Gif",
+						        "type": "value"
+						      }
+						    ],
+						    "intent": [
+						      {
+						        "confidence": 0.99553908116399,
+						        "value": "gif"
+						      }
+						    ]
+						  }
+						}
+				</code></pre>
+				<aside class="notes">
+					Show how to train Wit
+				</aside>
+				</section>
+				<section>
+						<h2>Anatomy of a chatbot</h2>
+						<ol>
+							<li>Integrate w. a messaging platform ✅</li>
+							<li>Parse and understand incomming messages ✅</li>
+							<li>Build reply to incomming messages</li>
+						</ol>
+				</section>
+				<section>
+					<h2>Our requirements</h2>
+					<p>
+						<ul>
+							<li class="fragment">Integrate with our API</li>
+							<li class="fragment">Ensure platform independence</li>
+							<li class="fragment">Version control and deployment</li>
+							<li class="fragment">Limit number of external dependencies</li>
+							<li class="fragment">Utilize messaging platform fully</li>
+						</ul>
+					</p>
+				</section>
+
+				<!-- FIRST ITERATION (USING BOT BUILDERS) -->
+				<section>
+					<h2>Using a bot builder</h2>
+					<ul>
+						<li class="fragment">
+							Outsourcing conversation logic
+						</li>
+						<li class="fragment">
+							Provided with NLU services
+						</li>
+						<li class="fragment">
+							Cheap!
+						</li>
+					</ul>
+				</section>
+				<section>
+					<h2>What could go wrong?</h2>
+					<ul>
+						<li class="fragment">Limited posibility for advanced conversation-flow</li>
+						<li class="fragment">Hard to override bad NLU</li>
+						<li class="fragment">Either too specialized or too general</li>
+						<li class="fragment">No version control</li>
+						<li class="fragment">No deployment</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Disclaimer</h2>
+					<ul>
+					<p>
+						Bot builders is a field in rapid development<br />
+						Great for very simple bots with simple flow
+					</p>
+				</ul>
+				</section>
+
+				<!-- SECOND ITERATION (MAKING IT OUR SELVES) -->
+				<section>
+					<h2>TalkTalk: A framework for conversation logic</h2>
+					<p>
+						Available at
+					</p>
+					<p>
+						<a href="https://github.com/mitoai/talktalk">https://github.com/mitoai/talktalk</a>
+					</p>
+					<p>
+						Examples at
+					</p>
+					<p>
+						<a href="https://github.com/mitoai/talktalk-examples">https://github.com/mitoai/talktalk-examples</a>
+					</p>
+				</section>
+				<section>
+
+				</section>
+				<!--
+					Uncover the domain, how is a conversation structured and how
+					whould an implementation differ from e.g. a web server.
+			 	-->
+
+				<!--
+					Short introduction to promises and flow
+				-->
+				<!--
+					Introduce dispatcher, handlers, context
+				-->
+				<!--
+					Introduce WIT, training and intent
+				-->
+				<!--
+					Supporting postbacks, explaination and motivation
+				-->
+				<!--
+					Code reuse through *Jumps*
+				-->
+
+				<!--
+					Testing !!!
+				-->
+
+				<section>
+						<h2>Anatomy of a chatbot</h2>
+						<ol>
+							<li>Integrate w. a messaging platform ✅</li>
+							<li>Parse and understand incomming messages ✅</li>
+							<li>Build reply to incomming messages ✅</li>
+						</ol>
+				</section>
+				<!-- CONCLUSION -->
+				<section>
+					Comment on general scare and luftkasteller
+				</section>
+				<section>
+					Add anecdote about Google Home and R
+				</section>
+				<section>
+					Conclusion
+
+					Comment about flaws of NLU and the benefit of making your bot
+					less personal. Dumb it down.
+
+					Maybe the AI revolution is "just" making reconition available?
+				</section>
+				<section>
+					<h2>Questions?</h2>
+				</section>
 			</div>
 		</div>
 
@@ -37,6 +349,7 @@
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
+				history: true,
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
