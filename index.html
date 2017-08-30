@@ -182,31 +182,31 @@
 				</section>
 				<section>
 					<h3>Example: Wit.ai</h3>
-					<pre><code data-trim data-noescape>
-						curl -XGET 'https://api.wit.ai/message?q=<mark>Send%20me%20a%20Gif</mark>' \
-						  -H 'Authorization: Bearer <mark>TOKEN</mark>
+					<pre><code class="bash" data-trim data-noescape>
+curl -XGET 'https://api.wit.ai/message?q=<mark>Send%20me%20a%20Gif</mark>' \
+  -H 'Authorization: Bearer <mark>TOKEN</mark>
 					</code></pre>
-					<pre><code data-trim data-noescape>
-						{
-						  "msg_id": "0EPRPKKplHuhYqMC6",
-						  "_text": "Send me a Gif",
-						  "entities": {
-						    "subject": [
-						      {
-						        "suggested": true,
-						        "confidence": 0.77118552501085,
-						        "value": "Gif",
-						        "type": "value"
-						      }
-						    ],
-						    "intent": [
-						      {
-						        "confidence": 0.99553908116399,
-						        "value": "gif"
-						      }
-						    ]
-						  }
-						}
+					<pre><code class="json" data-trim data-noescape>
+{
+  "msg_id": "0EPRPKKplHuhYqMC6",
+  "_text": "Send me a Gif",
+  "entities": {
+    "subject": [
+      {
+        "suggested": true,
+        "confidence": 0.77118552501085,
+        "value": "Gif",
+        "type": "value"
+      }
+    ],
+    "intent": [
+      {
+        "confidence": 0.99553908116399,
+        "value": "gif"
+      }
+    ]
+  }
+}
 				</code></pre>
 				<aside class="notes">
 					Show how to train Wit, intent and pull subject
@@ -287,6 +287,131 @@
 						<a href="https://github.com/mitoai/talktalk-examples">https://github.com/mitoai/talktalk-examples</a>
 					</p>
 				</section>
+				<section>
+					<h2>Echo</h2>
+					<pre><code class="javascript" data-noescape data-trim>
+class EchoHandler extends Handler {
+  async handleFirstMessage (message: CliMessage): Promise<*> {
+    await this.sendReply({message: message.message})
+  }
+}
+
+const dispatcher: Dispatcher<CliMessage, CliReply> = new Dispatcher(cliReplier)
+
+dispatcher.registerHandler(EchoHandler)
+
+startCliBot(dispatcher)
+					</code></pre>
+				</section>
+				<section>
+					<h2>Counter</h2>
+					<pre><code class="javascript" data-noescape data-trim>
+class CounterHandler extends Handler {
+  async handleFirstMessage (message: CliMessage) {
+    await this.sendReply({message: 'You have sent 1 message'})
+    return {count: 1}
+  }
+
+  async handleSessionMessage (message: CliMessage,
+                              context: { count: number }) {
+    const newCount = context.count + 1
+    await this.sendReply({message: `You have sent ${newCount} messages`})
+    return {count: newCount}
+  }
+}
+					</code></pre>
+				</section>
+				<section>
+					<h2>Counter</h2>
+					<pre><code class="javascript" data-noescape data-trim>
+class CounterHandler extends Handler {
+  async handleFirstMessage (message: CliMessage) {
+    await this.sendReply({message: 'You have sent 1 message'})
+    return {count: 1}
+  }
+
+  async handleSessionMessage (message: CliMessage,
+                              context: { count: number }) {
+    const newCount = context.count + 1
+    await this.sendReply({message: `You have sent ${newCount} messages`})
+    return {count: newCount}
+  }
+}
+					</code></pre>
+				</section>
+				<section>
+					<h2>Counter</h2>
+					<pre><code class="javascript" data-noescape data-trim>
+async handleSessionMessage (msg): Promise<*> {
+  const candidate = msg.entities.subject &amp;&amp; findBestCandidate(msg.entities.subject)
+  if (!candidate || candidate.confidence < 0.5) {
+    await this.sendReply({message: 'Sorry, I did not understand that. Please try again.'})
+    return {}
+  }
+  await this.sendReply({message: `Ok, I'll see what I can find about "${candidate.value}"`})
+  const gif = await fetchGif(candidate.value)
+  if (!gif) {
+    await this.sendReply({message: `I couldn't find any gif about ${candidate.value}`})
+    return
+  }
+  await this.sendReply({message: `I found this gif: ${gif}`})
+}
+					</code></pre>
+				</section>
+				<section>
+					<h2>Jump</h2>
+					<pre><code class="javascript" data-noescape data-trim>
+class QualityJudgeHandler extends Handler {
+  async handleJump (context: { number: number }) {
+    await this.sendReply({message: `${context.number}... That's not very original`})
+    this.jumpTo(IntroHandler, {})
+  }
+}
+
+class IntroHandler extends Handler {
+  async handleFirstMessage (): Promise<*> {
+    await this.sendReply({message: 'Hi'})
+    await this.sendReply({message: 'Please give me a number between 0 and 100!'})
+    return {}
+  }
+
+  async handleSessionMessage (message: CliMessage): Promise<*> {
+    const number = parseInt(message.message)
+    if (isNaN(number) || number < 0 || number > 100) {
+      await this.sendReply({message: 'That is not a valid number...'})
+      await this.sendReply({message: 'Try again!'})
+      return {}
+    }
+    this.jumpTo(QualityJudgeHandler, {number})
+  }
+
+  async handleJump (): Promise<*> {
+    this.sendReply({message: 'Try again!'})
+    return {}
+  }
+}
+					</code></pre>
+				</section>
+				<section>
+					<h2>Gif</h2>
+					<pre><code class="javascript" data-noescape data-trim>
+async handleSessionMessage (msg): Promise<*> {
+  const candidate = msg.entities.subject &amp;&amp; findBestCandidate(msg.entities.subject)
+  if (!candidate || candidate.confidence < 0.5) {
+    await this.sendReply({message: 'Sorry, I did not understand that. Please try again.'})
+    return {}
+  }
+  await this.sendReply({message: `Ok, I'll see what I can find about "${candidate.value}"`})
+  const gif = await fetchGif(candidate.value)
+  if (!gif) {
+    await this.sendReply({message: `I couldn't find any gif about ${candidate.value}`})
+    return
+  }
+  await this.sendReply({message: `I found this gif: ${gif}`})
+}
+					</code></pre>
+				</section>
+
 				<!--
 					Uncover the domain, how is a conversation structured and how
 					whould an implementation differ from e.g. a web server.
@@ -297,9 +422,6 @@
 				-->
 				<!--
 					Introduce dispatcher, handlers, context
-				-->
-				<!--
-					Introduce WIT, training and intent
 				-->
 				<!--
 					Supporting postbacks, explaination and motivation
