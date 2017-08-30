@@ -125,6 +125,9 @@
 						<li>Skype</li>
 						<li>Facebook Messenger</li>
 					</ul>
+					<p class="fragment">
+						Could also be applied to voice platforms
+					</p>
 				</section>
 				<section>
 					<h3>Example: Facebook Messenger</h3>
@@ -411,29 +414,25 @@ async handleSessionMessage (msg): Promise<*> {
 }
 					</code></pre>
 				</section>
+				<section>
+					<h2>Testing</h2>
+					<pre><code class="javascript" data-noescape data-trim>
+const tester : Tester<Message, Reply> = new Tester()
 
-				<!--
-					Uncover the domain, how is a conversation structured and how
-					whould an implementation differ from e.g. a web server.
-			 	-->
+class HelloWorldHandler extends Handler { ... }
 
-				<!--
-					Short introduction to promises and flow
-				-->
-				<!--
-					Introduce dispatcher, handlers, context
-				-->
-				<!--
-					Supporting postbacks, explaination and motivation
-				-->
-				<!--
-					Code reuse through *Jumps*
-				-->
+tester.dispatcher.registerHandler(HelloWorldHandler)
 
-				<!--
-					Testing !!!
-				-->
-
+describe('dispatcher', () => {
+  it('should send hello world', async () => {
+    const convo = tester.startConversation()
+    await convo.sendMessage({message: 'Hi'})
+    const reply = await convo.expectReply()
+    assert(reply.message === 'Hello world')
+  })
+})
+					</code></pre>
+				</section>
 				<section>
 						<h2>Anatomy of a chatbot</h2>
 						<ol>
@@ -444,18 +443,19 @@ async handleSessionMessage (msg): Promise<*> {
 				</section>
 				<!-- CONCLUSION -->
 				<section>
-					Comment on general scare and luftkasteller
-				</section>
-				<section>
-					Add anecdote about Google Home and R
-				</section>
-				<section>
-					Conclusion
-
-					Comment about flaws of NLU and the benefit of making your bot
-					less personal. Dumb it down.
-
-					Maybe the AI revolution is "just" making reconition available?
+					<h2>Should we?</h2>
+					<p class="fragment">
+						Chatbot is a buzzword
+					</p>
+					<p class="fragment">
+						Consider if a chatbot is ideal for your use-case
+					</p>
+					<p class="fragment">
+						Take conversation design serious
+					</p>
+					<p class="fragment">
+						Chatbots are easy to implement and cheap
+					</p>
 				</section>
 				<section>
 					<h2>Questions?</h2>
