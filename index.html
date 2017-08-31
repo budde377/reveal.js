@@ -30,7 +30,10 @@
 			.reveal section h3 {
 				font-size: 1em;
 			}
-			.reveal section img.icon {
+			.reveal section img {
+			  max-height: 8em;
+			}
+		  .reveal section img.icon {
 				border: 0;
 				margin: 0;
 				height: 1em;
@@ -104,7 +107,9 @@
 				<!-- INTRODUCTION -->
 				<section>
 					<h2>The Mito bot</h2>
-					<img data-src="img/mito-bot.gif" />
+					<p>
+						<img data-src="img/mito-bot.gif" />
+					</p>
 					<a href="https://m.me/mitobot" target="_blank">m.me/mitobot</a>
 				</section>
 				<section>
@@ -193,7 +198,9 @@
 				</section>
 				<section>
 					<h3>Example: Wit.ai</h3>
-					<img data-src="img/wit.gif" />
+					<p>
+						<img data-src="img/wit.gif" />
+					</p>
 					<a href="https://wit.ai/home" target="_blank">wit.ai/home</a>
 				</section>
 				<section>
@@ -306,11 +313,11 @@ curl -XGET 'https://api.wit.ai/message?q=<mark>Send%20me%20a%20Gif</mark>' \
 					<ul>
 						<li class="fragment">
 							<b>Dispatchers</b>
-							<div class="fragment">Choosing the right handler for the job</div>
+							<div >Choosing the right handler for the job</div>
 						</li>
 						<li class="fragment">
 							<b>Handlers</b>
-							<div class="fragment">Generating the replies</div>
+							<div >Generating the replies</div>
 						</li>
 					</ul>
 				</section>
@@ -403,7 +410,9 @@ async handleSessionMessage (msg): Promise<*> {
 				</section>
 				<section>
 					<h2>Hosted Gif</h2>
-					<img data-src="img/gif.gif" />
+					<p>
+						<img data-src="img/gif.gif" />
+					</p>
 					<a href="http://localhost:3001" target="_blank">localhost:3001</a>
 				</section>
 				<section>
@@ -448,12 +457,15 @@ describe('dispatcher', () => {
 					<p class="fragment">
 						Chatbots are easy to implement and cheap
 					</p>
+					<p class="fragment">
+						Interesting subject to follow
+					</p>
 				</section>
 				<section>
 					<h2>Questions?</h2>
 				</section>
 				<section>
-					<h2>We're hiring!</h2>
+					<h1>We're hiring!</h1>
 				</section>
 			</div>
 		</div>
