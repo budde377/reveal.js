@@ -68,7 +68,10 @@
 							Christian Budde Christensen
 						</p>
 						<p class="fragment">
-							M.Sc. from Aarhus University, Denmark
+							From Aarhus (Denmark) living in Trondheim
+						</p>
+						<p class="fragment">
+							M.Sc. in CS from Aarhus University
 						</p>
 						<p class="fragment">
 							<img class="icon" data-src="img/GitHub-Mark-Light-120px-plus.png"> / budde377
@@ -86,10 +89,10 @@
 						FinTech F3 inkubator
 					</p>
 					<p class="fragment">
-						Assistant for private investors
+						Scala, JavaScript, Flow, Docker, Kubernetes, Spark, <br /> Google Cloud
 					</p>
 					<p class="fragment">
-						Scala, JavaScript, Flow, Docker, Kubernetes, <br /> Google Cloud
+						Assistant for private investors
 					</p>
 					<aside class="notes">
 						400 000 articles / 24h
@@ -102,6 +105,7 @@
 				<section>
 					<h2>The Mito bot</h2>
 					<img data-src="img/mito-bot.gif" />
+					<a href="https://m.me/mitobot" target="_blank">m.me/mitobot</a>
 				</section>
 				<section>
 						<h2>Why chatbots?</h2>
@@ -130,7 +134,7 @@
 						<li>Facebook Messenger</li>
 					</ul>
 					<p class="fragment">
-						Could also be applied to voice platforms
+						Could also be applied to voice-based platforms
 					</p>
 				</section>
 				<section>
@@ -138,13 +142,13 @@
 					<ol>
 						<li class="fragment">
 							Receive messages with Webhooks
-							<a class="reference" href="https://developers.facebook.com/docs/messenger-platform/webhook">
+							<a class="reference" target="_blank" href="https://developers.facebook.com/docs/messenger-platform/webhook">
 								https://developers.facebook.com/docs/messenger-platform/webhook
 							</a>
 						</li>
 						<li class="fragment">
 							Send replies via Facebook Graph API
-							<a class="reference" href="https://developers.facebook.com/docs/messenger-platform/reference/send-api">
+							<a class="reference" target="_blank" href="https://developers.facebook.com/docs/messenger-platform/reference/send-api">
 								https://developers.facebook.com/docs/messenger-platform/reference/send-api
 							</a>
 						</li>
@@ -169,7 +173,7 @@
 						<b>N</b>atural <b>L</b>aunguage <b>U</b>nderstanding is a subtopic
 						of natural language processing in artificial intelligence that deals
 						with machine reading comprehension
-						<a class="source">
+						<a class="source" target="_blank" href="https://en.wikipedia.org/wiki/Natural_language_understanding">
 							https://en.wikipedia.org/wiki/Natural_language_understanding
 						</a>
 					</cite>
@@ -190,6 +194,7 @@
 				<section>
 					<h3>Example: Wit.ai</h3>
 					<img data-src="img/wit.gif" />
+					<a href="https://wit.ai/home" target="_blank">wit.ai/home</a>
 				</section>
 				<section>
 					<h3>Example: Wit.ai</h3>
@@ -286,17 +291,28 @@ curl -XGET 'https://api.wit.ai/message?q=<mark>Send%20me%20a%20Gif</mark>' \
 				<section>
 					<h2>TalkTalk: A framework for conversation logic</h2>
 					<p>
-						Available at
+						Available at <br />
+						<a target="_blank" href="https://github.com/mitoai/talktalk">github.com/mitoai/talktalk</a>
+						<pre><code style="text-align: center" class="bash">npm i talktalk</code></pre>
+						<br />
 					</p>
-					<p>
-						<a href="https://github.com/mitoai/talktalk">https://github.com/mitoai/talktalk</a>
+					<p class="fragment">
+						Examples at<br />
+						<a target="_blank" href="https://github.com/mitoai/talktalk-examples">github.com/mitoai/talktalk-examples</a>
 					</p>
-					<p>
-						Examples at
-					</p>
-					<p>
-						<a href="https://github.com/mitoai/talktalk-examples">https://github.com/mitoai/talktalk-examples</a>
-					</p>
+				</section>
+				<section>
+					<h2>TalkTalk - Key concepts</h2>
+					<ul>
+						<li class="fragment">
+							<b>Dispatchers</b>
+							<div class="fragment">Choosing the right handler for the job</div>
+						</li>
+						<li class="fragment">
+							<b>Handlers</b>
+							<div class="fragment">Generating the replies</div>
+						</li>
+					</ul>
 				</section>
 				<section>
 					<h2>Echo</h2>
@@ -329,43 +345,6 @@ class CounterHandler extends Handler {
     await this.sendReply({message: `You have sent ${newCount} messages`})
     return {count: newCount}
   }
-}
-					</code></pre>
-				</section>
-				<section>
-					<h2>Counter</h2>
-					<pre><code class="javascript" data-noescape data-trim>
-class CounterHandler extends Handler {
-  async handleFirstMessage (message: CliMessage) {
-    await this.sendReply({message: 'You have sent 1 message'})
-    return {count: 1}
-  }
-
-  async handleSessionMessage (message: CliMessage,
-                              context: { count: number }) {
-    const newCount = context.count + 1
-    await this.sendReply({message: `You have sent ${newCount} messages`})
-    return {count: newCount}
-  }
-}
-					</code></pre>
-				</section>
-				<section>
-					<h2>Counter</h2>
-					<pre><code class="javascript" data-noescape data-trim>
-async handleSessionMessage (msg): Promise<*> {
-  const candidate = msg.entities.subject &amp;&amp; findBestCandidate(msg.entities.subject)
-  if (!candidate || candidate.confidence < 0.5) {
-    await this.sendReply({message: 'Sorry, I did not understand that. Please try again.'})
-    return {}
-  }
-  await this.sendReply({message: `Ok, I'll see what I can find about "${candidate.value}"`})
-  const gif = await fetchGif(candidate.value)
-  if (!gif) {
-    await this.sendReply({message: `I couldn't find any gif about ${candidate.value}`})
-    return
-  }
-  await this.sendReply({message: `I found this gif: ${gif}`})
 }
 					</code></pre>
 				</section>
@@ -423,6 +402,11 @@ async handleSessionMessage (msg): Promise<*> {
 					</code></pre>
 				</section>
 				<section>
+					<h2>Hosted Gif</h2>
+					<img data-src="img/gif.gif" />
+					<a href="http://localhost:3001" target="_blank">localhost:3001</a>
+				</section>
+				<section>
 					<h2>Testing</h2>
 					<pre><code class="javascript" data-noescape data-trim>
 const tester : Tester<Message, Reply> = new Tester()
@@ -456,7 +440,7 @@ describe('dispatcher', () => {
 						Chatbots are easy to implement and cheap
 					</p>
 					<p class="fragment">
-						Take conversation design serious
+						Conversation design is hard
 					</p>
 					<p class="fragment">
 						Chatbot is a buzzword
@@ -467,6 +451,9 @@ describe('dispatcher', () => {
 				</section>
 				<section>
 					<h2>Questions?</h2>
+				</section>
+				<section>
+					<h2>We're hiring!</h2>
 				</section>
 			</div>
 		</div>
